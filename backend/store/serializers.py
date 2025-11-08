@@ -22,3 +22,9 @@ class StoreSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["slug", "is_active", "created_at", "updated_at"]
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+        if hasattr(user, "store"):
+            raise serializers.ValidationError("You already have a store.")
+        return attrs

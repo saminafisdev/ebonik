@@ -5,11 +5,11 @@ from django_resized import ResizedImageField
 
 
 class Store(models.Model):
-    owner = models.ForeignKey(
+    owner = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         limit_choices_to={"role": "vendor"},
-        related_name="stores",
+        related_name="store",
     )
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, blank=True)
