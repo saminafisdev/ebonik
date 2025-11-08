@@ -19,10 +19,16 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
+from debug_toolbar.toolbar import debug_toolbar_urls
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/", include("store.urls")),
-    path("api/auth/", include("djoser.urls")),
-    path("api/auth/", include("djoser.urls.jwt")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("api/", include("store.urls")),
+        path("api/", include("products.urls")),
+        path("api/auth/", include("djoser.urls")),
+        path("api/auth/", include("djoser.urls.jwt")),
+    ]
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    + debug_toolbar_urls()
+)

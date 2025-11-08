@@ -5,7 +5,9 @@ charset-normalizer==3.4.4
 cryptography==46.0.3
 defusedxml==0.7.1
 Django==5.2.7
+django-debug-toolbar==6.1.0
 django-environ==0.12.0
+django-filter==25.2
 django-resized==1.0.3
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
