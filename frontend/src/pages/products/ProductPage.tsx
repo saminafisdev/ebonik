@@ -307,7 +307,7 @@ export default function ProductsPage() {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      {product.name}
+                      <Link to={`/products/${product.id}`}>{product.name}</Link>
                     </h4>
                   </div>
                   <div style={{ marginBottom: "10px" }}>

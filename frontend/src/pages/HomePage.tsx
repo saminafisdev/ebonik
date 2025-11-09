@@ -12,6 +12,8 @@ import {
   TrophyIcon,
 } from "lucide-react";
 import { categories, products } from "../data/mockData";
+import ProductDetailPage from "./products/ProductDetailPage";
+import { useState } from "react";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   laptop: <Laptop2Icon style={{ fontSize: "48px", color: "#1890ff" }} />,
@@ -28,6 +30,17 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 export default function HomePage() {
   const featuredProducts = products.slice(0, 8);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
+
+  if (selectedProductId) {
+    return (
+      <div>
+        <ProductDetailPage />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -218,6 +231,7 @@ export default function HomePage() {
             <Col xs={24} sm={12} md={8} lg={6} key={product.id}>
               <Card
                 hoverable
+                onClick={() => setSelectedProductId(product.id)}
                 cover={
                   <div
                     style={{
@@ -228,7 +242,7 @@ export default function HomePage() {
                   >
                     <img
                       alt={product.name}
-                      // src={product?.images[0]?.image}
+                      src={product?.images[0]?.image}
                       style={{
                         width: "100%",
                         height: "100%",
