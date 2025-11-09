@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".", // Or "src" if your source files are in a "src" directory
+    "paths": {
+      "@/*": ["src/*"] // Al
+    },
+
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
