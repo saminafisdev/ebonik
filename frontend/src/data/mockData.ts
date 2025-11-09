@@ -244,3 +244,27 @@ export const brands = [
   "OutdoorGear",
   "GreenLife",
 ];
+
+export const mockCartItems = [
+  {
+    id: "1",
+    name: "Wireless Bluetooth Headphones",
+    price: 99.99,
+    quantity: 1,
+    image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Headphones",
+  },
+  {
+    id: "2",
+    name: "Smartwatch with Heart Rate Monitor",
+    price: 199.99,
+    quantity: 2,
+    image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Smartwatch",
+  },
+  {
+    id: "3",
+    name: "Portable Power Bank 10000mAh",
+    price: 29.99,
+    quantity: 1,
+    image: "https://via.placeholder.com/150/008000/FFFFFF?text=PowerBank",
+  },
+];

@@ -3,6 +3,7 @@ import AppLayout from "./components/layout/AppLayout";
 import { ConfigProvider } from "antd";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/products/ProductPage";
+import CartPage from "./pages/cart/CartPage";
 import ProductDetailPage from "./pages/products/ProductDetailPage";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductDetailPage />} />
           </Route>
+          <Route path="/cart" element={<CartPage />} />
         </Route>
       </Routes>
     </ConfigProvider>
