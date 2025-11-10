@@ -242,7 +242,7 @@ export default function HomePage() {
                   >
                     <img
                       alt={product.name}
-                      src={product?.images[0]?.image}
+                      // src={product?.images[0]?.image}
                       style={{
                         width: "100%",
                         height: "100%",

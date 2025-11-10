@@ -1,10 +1,13 @@
 import { Badge, Button, Layout, Menu, theme } from "antd";
 import { Input } from "antd";
 import type { GetProps, MenuProps } from "antd";
-import { ShoppingCartIcon, User2Icon } from "lucide-react";
+import { User2Icon } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import Footer from "../Footer";
 import { useEffect, useState } from "react";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/pages/auth/authSlice";
 
 const { Header, Content } = Layout;
 
@@ -25,6 +28,7 @@ const menuItems = [
 
 export default function AppLayout() {
   const location = useLocation();
+  const user = useSelector(selectCurrentUser);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -94,12 +98,16 @@ export default function AppLayout() {
             onSearch={onSearch}
           />
           <Badge count={3} offset={[-5, 5]}>
-            <Button
-              type="text"
-              icon={<ShoppingCartIcon style={{ fontSize: "20px" }} />}
-            />
+            <Link to={"/cart"}>
+              <Button
+                type="text"
+                icon={<ShoppingCartOutlined style={{ fontSize: "20px" }} />}
+              />
+            </Link>
           </Badge>
-          <Button type="text" icon={<User2Icon />} />
+          <Button type="text" icon={<User2Icon />}>
+            {user?.first_name}
+          </Button>
         </div>
       </Header>
       <Content>
