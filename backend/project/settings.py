@@ -144,7 +144,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "accounts.authentication.CustomJWTAuthentication",
     ),
 }
 
@@ -166,7 +166,7 @@ AUTH_COOKIE_SECURE = env.bool(
 )  # Should be True in production with HTTPS
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = "/"
-AUTH_COOKIE_SAME_SITE = "None"
+AUTH_COOKIE_SAME_SITE = env.str("AUTH_COOKIE_SAME_SITE")
 
 # Djoser settings
 DJOSER = {
