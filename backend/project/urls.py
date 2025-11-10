@@ -26,6 +26,7 @@ urlpatterns = (
         path("admin/", admin.site.urls),
         path("api/", include("store.urls")),
         path("api/", include("products.urls")),
+        path("api/", include("cart.urls")),
         path("api/auth/", include("djoser.urls")),
         path("api/auth/", include("djoser.urls.jwt")),
     ]
