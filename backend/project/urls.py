@@ -28,7 +28,7 @@ urlpatterns = (
         path("api/", include("products.urls")),
         path("api/", include("cart.urls")),
         path("api/auth/", include("djoser.urls")),
-        path("api/auth/", include("djoser.urls.jwt")),
+        path("api/auth/", include("accounts.urls")),
     ]
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     + debug_toolbar_urls()
