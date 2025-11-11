@@ -13,7 +13,7 @@
       body {
         height: 100%;
         margin: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family: system-ui, sans-serif;
       }
 
       .lottie-container {
@@ -21,20 +21,51 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
         text-align: center;
+        padding: 20px;
+      }
+
+      /* Make canvas responsive */
+      canvas {
+        width: 80%; /* relative to container */
+        max-width: 300px; /* won’t exceed this on desktop */
+        height: auto; /* maintain aspect ratio */
+      }
+
+      h1 {
+        font-size: 1.5rem; /* smaller on mobile */
+        margin: 0.5rem 0;
+      }
+
+      p {
+        font-size: 1rem;
+        margin: 0.5rem 0 1rem 0;
+      }
+
+      a {
+        display: inline-block;
+        text-decoration: none;
+        color: white;
+        background: #d84a1b;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
       }
     </style>
   </head>
   <body>
     <div class="lottie-container">
       <canvas id="canvas" width="300" height="300"></canvas>
-      <h1>Welcome to e<span style="color: #d84a1b;">Bonik</span></h1>
+      <h1>Welcome to e<span style="color: #d84a1b">Bonik</span></h1>
       <p>Your one-stop destination for quality products at amazing prices</p>
       <a href="https://ebonik.vercel.app">Go to shop</a>
     </div>
+
     <script type="module">
       import { DotLottie } from "https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm";
+
+      const canvas = document.getElementById("canvas");
+      canvas.width = Math.min(window.innerWidth * 0.8, 300);
+      canvas.height = canvas.width; // square canvas
 
       new DotLottie({
         autoplay: true,
