@@ -1,38 +1,14 @@
-import { Button, Card, Carousel, Col, Input, Rate, Row, Tag } from "antd";
-import {
-  BookIcon,
-  CarIcon,
-  ChevronRightIcon,
-  CrownIcon,
-  GiftIcon,
-  HomeIcon,
-  Laptop2Icon,
-  MailIcon,
-  ShoppingBagIcon,
-  TrophyIcon,
-} from "lucide-react";
-import { categories, products } from "../data/mockData";
+import { Button, Card, Carousel, Col, Input, Row, Spin } from "antd";
+import { ChevronRightIcon, MailIcon } from "lucide-react";
 import ProductDetailPage from "./products/ProductDetailPage";
 import { useState } from "react";
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  laptop: <Laptop2Icon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  "shopping-bag": (
-    <ShoppingBagIcon style={{ fontSize: "48px", color: "#1890ff" }} />
-  ),
-  home: <HomeIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  trophy: <TrophyIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  book: <BookIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  gift: <GiftIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  sparkles: <CrownIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-  car: <CarIcon style={{ fontSize: "48px", color: "#1890ff" }} />,
-};
+import { useGetAllCategoriesQuery } from "@/app/services/categories";
 
 export default function HomePage() {
-  const featuredProducts = products.slice(0, 8);
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(
-    null
-  );
+  // const featuredProducts = products.slice(0, 8);
+  const [selectedProductId] = useState<number | null>(null);
+  const { data: categories, isLoading: isCategoriesLoading } =
+    useGetAllCategoriesQuery();
 
   if (selectedProductId) {
     return (
@@ -181,34 +157,38 @@ export default function HomePage() {
         </div>
 
         <Row gutter={[24, 24]} style={{ marginBottom: "80px" }}>
-          {categories.map((category) => (
-            <Col xs={12} sm={12} md={8} lg={6} key={category.id}>
-              <Card
-                hoverable
-                style={{
-                  textAlign: "center",
-                  height: "100%",
-                  transition: "all 0.3s ease",
-                }}
-                bodyStyle={{ padding: "30px 20px" }}
-              >
-                {categoryIcons[category.icon]}
-                <h3
+          {isCategoriesLoading ? (
+            <Spin />
+          ) : (
+            categories?.map((category) => (
+              <Col xs={12} sm={12} md={8} lg={6} key={category.id}>
+                <Card
+                  hoverable
                   style={{
-                    marginTop: "20px",
-                    marginBottom: "10px",
-                    fontSize: "18px",
-                    fontWeight: "600",
+                    textAlign: "center",
+                    height: "100%",
+                    transition: "all 0.3s ease",
                   }}
+                  bodyStyle={{ padding: "30px 20px" }}
                 >
-                  {category.name}
-                </h3>
-                <p style={{ color: "#666", margin: 0 }}>
-                  {category.productCount} products
-                </p>
-              </Card>
-            </Col>
-          ))}
+                  {/* {categoryIcons[category.icon]} */}
+                  <h3
+                    style={{
+                      marginTop: "20px",
+                      marginBottom: "10px",
+                      fontSize: "18px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {category.name}
+                  </h3>
+                  <p style={{ color: "#666", margin: 0 }}>
+                    {category.products_count} products
+                  </p>
+                </Card>
+              </Col>
+            ))
+          )}
         </Row>
 
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
@@ -226,7 +206,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <Row gutter={[24, 24]} style={{ marginBottom: "80px" }}>
+        {/* <Row gutter={[24, 24]} style={{ marginBottom: "80px" }}>
           {featuredProducts.map((product) => (
             <Col xs={24} sm={12} md={8} lg={6} key={product.id}>
               <Card
@@ -338,7 +318,7 @@ export default function HomePage() {
               </Card>
             </Col>
           ))}
-        </Row>
+        </Row> */}
 
         <div
           style={{

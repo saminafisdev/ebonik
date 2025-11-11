@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Col, Breadcrumb, Select, Button, Drawer } from "antd";
+import { Row, Col, Breadcrumb, Select, Button, Drawer, Spin } from "antd";
 import { FilterIcon, HomeIcon } from "lucide-react";
 import { useGetProductsQuery } from "@/app/services/products";
 import { Link } from "react-router";
@@ -17,7 +17,7 @@ export default function ProductsPage() {
     data: paginatedProducts = [],
     isLoading,
     isError,
-  } = useGetProductsQuery();
+  } = useGetProductsQuery({});
   // const [filters, setFilters] = useState<FilterState>({
   //   priceRange: [0, 500],
   //   brands: [],
@@ -167,7 +167,6 @@ export default function ProductsPage() {
   //   </div>
   // );
 
-  if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
 
   return (
@@ -243,11 +242,15 @@ export default function ProductsPage() {
           </div>
 
           <Row gutter={[24, 24]} style={{ marginBottom: "40px" }}>
-            {paginatedProducts.map((product) => (
-              <Col xs={24} sm={12} md={12} lg={8} xl={6} key={product.id}>
-                <ProductCard product={product} />
-              </Col>
-            ))}
+            {isLoading ? (
+              <Spin size="large" />
+            ) : (
+              paginatedProducts.map((product) => (
+                <Col xs={24} sm={12} md={12} lg={8} xl={6} key={product.id}>
+                  <ProductCard product={product} />
+                </Col>
+              ))
+            )}
           </Row>
 
           {/* {filteredAndSortedProducts.length === 0 && (

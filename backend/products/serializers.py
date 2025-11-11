@@ -4,10 +4,11 @@ from .models import Category, Product, ProductImage
 
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.StringRelatedField(many=True, read_only=True)
+    products_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Category
-        fields = ["id", "name", "slug", "parent", "subcategories"]
+        fields = ["id", "name", "slug", "parent", "subcategories", "products_count"]
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

@@ -1,11 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, InputNumber, Space, Typography, Popconfirm, message } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { mockCartItems } from '../../data/mockData';
+import React, { useState, useEffect } from "react";
+import {
+  Table,
+  Button,
+  InputNumber,
+  Space,
+  Typography,
+  Popconfirm,
+  message,
+} from "antd";
+import type { TableProps } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useGetUserCartQuery } from "@/app/services/cart";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../auth/authSlice";
 
 const { Title, Text } = Typography;
 
-interface CartItem {
+interface CartTableItem {
   id: string;
   name: string;
   price: number;
@@ -14,56 +25,73 @@ interface CartItem {
 }
 
 const CartPage: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const user = useSelector(selectCurrentUser);
+  const { data: cart, isLoading } = useGetUserCartQuery(undefined, {
+    skip: !user,
+  });
 
+  const [cartItems, setCartItems] = useState<CartTableItem[]>([]);
+
+  // Populate cartItems when API data arrives
   useEffect(() => {
-    // Load mock data when the component mounts
-    setCartItems(mockCartItems);
-  }, []);
+    if (cart?.items) {
+      const mapped = cart.items.map((item) => ({
+        id: item.id.toString(),
+        name: item.product.name,
+        price: parseFloat(item.product.price),
+        quantity: item.quantity,
+        image: item.product.images[0]?.image || "",
+      }));
+      setCartItems(mapped);
+    }
+  }, [cart]);
 
   const handleQuantityChange = (id: string, newQuantity: number | null) => {
-    if (newQuantity === null || newQuantity <= 0) {
-      message.error('Quantity must be at least 1');
+    if (!newQuantity || newQuantity <= 0) {
+      message.error("Quantity must be at least 1");
       return;
     }
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
+    setCartItems((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const handleRemoveItem = (id: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    message.success('Item removed from cart');
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    message.success("Item removed from cart");
   };
 
-  const calculateSubtotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
+  const calculateSubtotal = () =>
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const columns: ColumnsType<CartItem> = [
+  const columns: TableProps<CartTableItem>["columns"] = [
     {
-      title: 'Product',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Product",
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => (
         <Space>
-          <img src={record.image} alt={text} style={{ width: 50, height: 50, objectFit: 'cover' }} />
+          <img
+            src={record.image}
+            alt={text}
+            style={{ width: 50, height: 50, objectFit: "cover" }}
+          />
           <Text>{text}</Text>
         </Space>
       ),
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price) => `$${price.toFixed(2)}`,
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price) => `৳${price.toFixed(2)}`,
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
       render: (quantity, record) => (
         <InputNumber
           min={1}
@@ -73,13 +101,13 @@ const CartPage: React.FC = () => {
       ),
     },
     {
-      title: 'Total',
-      key: 'total',
-      render: (_, record) => `$${(record.price * record.quantity).toFixed(2)}`,
+      title: "Total",
+      key: "total",
+      render: (_, record) => `৳${(record.price * record.quantity).toFixed(2)}`,
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (_, record) => (
         <Popconfirm
           title="Are you sure to remove this item?"
@@ -94,13 +122,16 @@ const CartPage: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Title level={2}>Shopping Cart</Title>
+    <div style={{ padding: "20px" }}>
+      <Title level={2}>
+        <ShoppingCartOutlined /> Shopping Cart
+      </Title>
       {cartItems.length === 0 ? (
         <Text>Your cart is empty.</Text>
       ) : (
         <>
-          <Table
+          <Table<CartTableItem>
+            loading={isLoading}
             columns={columns}
             dataSource={cartItems}
             rowKey="id"
@@ -111,13 +142,13 @@ const CartPage: React.FC = () => {
                   <Text strong>Subtotal</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={1}>
-                  <Text strong>${calculateSubtotal().toFixed(2)}</Text>
+                  <Text strong>৳{calculateSubtotal().toFixed(2)}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={2}></Table.Summary.Cell>
               </Table.Summary.Row>
             )}
           />
-          <div style={{ textAlign: 'right', marginTop: '20px' }}>
+          <div style={{ textAlign: "right", marginTop: "20px" }}>
             <Button type="primary" size="large">
               Proceed to Checkout
             </Button>

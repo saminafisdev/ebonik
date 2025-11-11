@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "./pages/auth/authSlice";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { volcano } from "@ant-design/colors";
+import CategoriesListPage from "./pages/categories/CategoriesListPage";
+import CategoryDetailsPage from "./pages/categories/CategoryDetailPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +61,10 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/categories">
+            <Route index element={<CategoriesListPage />} />
+            <Route path=":slug" element={<CategoryDetailsPage />} />
+          </Route>
           <Route path="/products">
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductDetailPage />} />

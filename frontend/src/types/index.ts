@@ -22,13 +22,26 @@ export interface Product {
   created_at: string;
   updated_at: string;
 }
+export interface CartItem {
+  id: number;
+  product: Product;
+  quantity: number;
+  total_price: number;
+}
+
+export interface Cart {
+  id: string; // UUID string
+  items: CartItem[];
+  total_price: number;
+}
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
-  image: string;
-  productCount: number;
-  icon: string;
+  slug: string;
+  parent: number | null; // null if top-level, otherwise parent category id
+  subcategories: string[]; // list of subcategory names
+  products_count: number;
 }
 
 export interface FilterState {

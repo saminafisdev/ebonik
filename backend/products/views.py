@@ -1,4 +1,10 @@
+from django.db.models import Count, Q
+
 from rest_framework import exceptions, viewsets, permissions
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .filters import ProductFilter
+
 
 from .permissions import IsVendorOrOwnerOrReadOnly
 from .models import Category, Product, ProductImage
@@ -12,8 +18,12 @@ from store.permissions import IsVendor  # same permission you used in StoreViewS
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(parent__isnull=True).annotate(
+        products_count=Count("products", distinct=True)
+        + Count("subcategories__products", distinct=True)
+    )
     serializer_class = CategorySerializer
+    lookup_field = "slug"
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
@@ -27,6 +37,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     )
     serializer_class = ProductSerializer
     permission_classes = [IsVendorOrOwnerOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
 
     def perform_create(self, serializer):
         user = self.request.user
