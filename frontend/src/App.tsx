@@ -15,6 +15,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { volcano } from "@ant-design/colors";
 import CategoriesListPage from "./pages/categories/CategoriesListPage";
 import CategoryDetailsPage from "./pages/categories/CategoryDetailPage";
+import AboutPage from "./pages/About";
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </ConfigProvider>
   );
