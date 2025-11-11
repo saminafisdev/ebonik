@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "django_filters",
+    "cloudinary_storage",
+    "cloudinary",
     "accounts",
     "store",
     "products",
@@ -129,7 +131,6 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 
 # Default primary key field type
