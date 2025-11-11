@@ -1,0 +1,22 @@
+/* Hide desktop menu & search on small screens */
+.desktop-search {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .desktop-menu,
+  .desktop-search {
+    display: none;
+  }
+  .mobile-toggle {
+    display: inline-flex;
+  }
+}
+
+/* Show desktop menu/search normally */
+@media (min-width: 769px) {
+  .mobile-toggle {
+    display: none;
+  }
+}

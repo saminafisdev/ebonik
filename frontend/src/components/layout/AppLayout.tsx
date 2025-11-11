@@ -1,11 +1,16 @@
-import { Badge, Button, Layout, Menu, theme } from "antd";
+import "./layout.css";
+
+import { Badge, Button, Drawer, Layout, Menu, theme } from "antd";
 import { Input } from "antd";
 import type { GetProps, MenuProps } from "antd";
-import { User2Icon } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import Footer from "../Footer";
 import { useEffect, useState } from "react";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/pages/auth/authSlice";
 
@@ -29,6 +34,7 @@ const menuItems = [
 export default function AppLayout() {
   const location = useLocation();
   const user = useSelector(selectCurrentUser);
+  const [open, setOpen] = useState(false);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -56,9 +62,11 @@ export default function AppLayout() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          padding: "0 16px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
+        {/* Left side: Logo + Menu (desktop) */}
+        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           <Link
             to="/"
             style={{
@@ -71,32 +79,31 @@ export default function AppLayout() {
           >
             e<span style={{ color: "#d84a1b" }}>Bonik</span>
           </Link>
-          {/* <Menu
-            mode="horizontal"
-            style={{ flex: 1, minWidth: 0 }}
-            selectedKeys={[current]}
-          >
-            {menuItems.map(({ key, label, route }) => (
-              <Menu.Item key={key} onClick={onClick}>
-                <NavLink to={`/${route}`}>{label}</NavLink>
-              </Menu.Item>
-            ))}
-          </Menu> */}
-          <Menu
-            onClick={onClick}
-            mode="horizontal"
-            style={{ flex: 1, minWidth: 0 }}
-            selectedKeys={[current]}
-            items={menuItems}
-          />
+
+          {/* Desktop menu */}
+          <div className="desktop-menu">
+            <Menu
+              onClick={onClick}
+              mode="horizontal"
+              style={{ flex: 1, minWidth: 0 }}
+              selectedKeys={[current]}
+              items={menuItems}
+            />
+          </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <Search
-            allowClear
-            placeholder="Search products..."
-            size="large"
-            onSearch={onSearch}
-          />
+
+        {/* Right side: Search + Cart + User */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <div className="desktop-search">
+            <Search
+              allowClear
+              placeholder="Search shop..."
+              size="large"
+              onSearch={onSearch}
+              enterButton
+            />
+          </div>
+
           <Badge count={3} offset={[-5, 5]}>
             <Link to={"/cart"}>
               <Button
@@ -105,11 +112,44 @@ export default function AppLayout() {
               />
             </Link>
           </Badge>
-          <Button type="text" icon={<User2Icon />}>
-            {user?.first_name}
+
+          <Button type="text" icon={<UserOutlined />}>
+            {user?.first_name || "Account"}
           </Button>
+
+          {/* Mobile menu toggle */}
+          <Button
+            type="text"
+            icon={<MenuOutlined style={{ fontSize: "20px" }} />}
+            className="mobile-toggle"
+            onClick={() => setOpen(true)}
+          />
         </div>
+
+        {/* Drawer for mobile menu */}
+        <Drawer
+          title="Menu"
+          placement="left"
+          onClose={() => setOpen(false)}
+          open={open}
+        >
+          <Search
+            allowClear
+            placeholder="Search shop..."
+            size="middle"
+            onSearch={onSearch}
+            style={{ marginBottom: 16 }}
+            enterButton
+          />
+          <Menu
+            onClick={onClick}
+            mode="inline"
+            selectedKeys={[current]}
+            items={menuItems}
+          />
+        </Drawer>
       </Header>
+
       <Content>
         <div
           style={{
