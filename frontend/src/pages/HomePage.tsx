@@ -169,7 +169,7 @@ export default function HomePage() {
                     height: "100%",
                     transition: "all 0.3s ease",
                   }}
-                  bodyStyle={{ padding: "30px 20px" }}
+                  styles={{ body: { padding: "30px 20px" } }}
                 >
                   {/* {categoryIcons[category.icon]} */}
                   <h3
