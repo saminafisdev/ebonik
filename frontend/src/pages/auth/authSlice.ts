@@ -8,9 +8,14 @@ type AuthState = {
   isAuthenticated: boolean;
 };
 
+const initialState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+};
+
 const slice = createSlice({
   name: "auth",
-  initialState: { user: null } as AuthState,
+  initialState: initialState,
   reducers: {
     setCredentials: (state, { payload }: PayloadAction<User>) => {
       state.user = payload;
