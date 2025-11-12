@@ -6,13 +6,10 @@ import type { GetProps, MenuProps } from "antd";
 import { Link, Outlet, useLocation } from "react-router";
 import Footer from "../Footer";
 import { useEffect, useState } from "react";
-import {
-  MenuOutlined,
-  ShoppingCartOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/pages/auth/authSlice";
+import AccountDropdown from "../AccountDropdown";
 
 const { Header, Content } = Layout;
 
@@ -113,9 +110,7 @@ export default function AppLayout() {
             </Link>
           </Badge>
 
-          <Button type="text" icon={<UserOutlined />}>
-            {user?.first_name || "Account"}
-          </Button>
+          <AccountDropdown user={user} />
 
           {/* Mobile menu toggle */}
           <Button

@@ -16,6 +16,12 @@ export const authApi = api.injectEndpoints({
         body: credentials,
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "auth/logout/ ",
+        method: "POST",
+      }),
+    }),
     getCurrentUser: builder.query({
       query: () => "auth/users/me/",
     }),
@@ -25,6 +31,7 @@ export const authApi = api.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useLogoutMutation,
   useGetCurrentUserQuery,
   useLazyGetCurrentUserQuery,
 } = authApi;
