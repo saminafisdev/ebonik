@@ -1,5 +1,14 @@
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Typography, message, Row, Col } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Typography,
+  message,
+  Row,
+  Col,
+  Switch,
+} from "antd";
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
@@ -18,16 +27,32 @@ export default function Register() {
   const [loginTrigger] = useLoginMutation();
   const [messageApi, contextHolder] = message.useMessage();
 
+  type RegisterPayload = {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    role: "customer" | "vendor";
+  };
+
   async function onFinish(values: {
     first_name: string;
     last_name: string;
     email: string;
     password: string;
     confirmPassword: string;
+    isSeller: boolean;
   }) {
+    const { isSeller, ...rest } = values;
+
+    const payload: RegisterPayload = {
+      ...rest,
+      role: isSeller ? "vendor" : "customer",
+    };
     try {
       // Step 1: Register
-      await mutate(values).unwrap();
+      await mutate(payload).unwrap();
       messageApi.success("Account created successfully 🎉");
 
       // Step 2: Login (cookies will be set automatically)
@@ -144,6 +169,14 @@ export default function Register() {
                 prefix={<LockOutlined />}
                 placeholder="Confirm Password"
               />
+            </Form.Item>
+
+            <Form.Item
+              label="Business account"
+              layout="horizontal"
+              name={"isSeller"}
+            >
+              <Switch />
             </Form.Item>
 
             <Form.Item>
