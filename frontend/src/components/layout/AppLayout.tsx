@@ -10,6 +10,7 @@ import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/pages/auth/authSlice";
 import AccountDropdown from "../AccountDropdown";
+import { useGetUserCartQuery } from "@/app/services/cart";
 
 const { Header, Content } = Layout;
 
@@ -32,6 +33,9 @@ export default function AppLayout() {
   const location = useLocation();
   const user = useSelector(selectCurrentUser);
   const [open, setOpen] = useState(false);
+  const { data: cart } = useGetUserCartQuery(undefined, {
+    skip: !user,
+  });
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -101,7 +105,7 @@ export default function AppLayout() {
             />
           </div>
 
-          <Badge count={3} offset={[-5, 5]}>
+          <Badge count={cart?.items.length} offset={[-5, 5]}>
             <Link to={"/cart"}>
               <Button
                 type="text"

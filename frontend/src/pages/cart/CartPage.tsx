@@ -10,7 +10,10 @@ import {
 } from "antd";
 import type { TableProps } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useGetUserCartQuery } from "@/app/services/cart";
+import {
+  useDeleteCartItemMutation,
+  useGetUserCartQuery,
+} from "@/app/services/cart";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 
@@ -29,6 +32,7 @@ const CartPage: React.FC = () => {
   const { data: cart, isLoading } = useGetUserCartQuery(undefined, {
     skip: !user,
   });
+  const [deleteCartItem] = useDeleteCartItemMutation();
 
   const [cartItems, setCartItems] = useState<CartTableItem[]>([]);
 
@@ -58,8 +62,8 @@ const CartPage: React.FC = () => {
     );
   };
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const handleRemoveItem = async (id: string) => {
+    await deleteCartItem(id);
     message.success("Item removed from cart");
   };
 

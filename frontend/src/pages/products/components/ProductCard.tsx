@@ -1,7 +1,7 @@
-import { useAddToCartMutation } from "@/app/services/cart";
+import { useAddToCart } from "@/hooks/useAddToCart";
 import type { Product } from "@/types";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { Button, Card, message } from "antd";
+import { Button, Card } from "antd";
 import { Link } from "react-router";
 
 interface ProductCardProps {
@@ -9,28 +9,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [messageApi, contextHolder] = message.useMessage();
-  const [mutate, { isLoading }] = useAddToCartMutation();
-
-  const handleAddToCart = () => {
-    mutate({
-      product_id: product.id,
-      quantity: 1,
-    })
-      .unwrap()
-      .then(() =>
-        messageApi.open({
-          type: "success",
-          content: "Item added to cart",
-        })
-      )
-      .catch(() =>
-        messageApi.open({
-          type: "error",
-          content: "Failed to add item to cart",
-        })
-      );
-  };
+  const { handleAddToCart, contextHolder, isLoading } = useAddToCart();
 
   return (
     <>
@@ -151,7 +130,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           block
           icon={<ShoppingCartOutlined />}
           size="small"
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart(product.id)}
           loading={isLoading}
         >
           Add to Cart
