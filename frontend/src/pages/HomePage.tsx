@@ -1,8 +1,18 @@
-import { Button, Card, Carousel, Col, Input, Row, Spin } from "antd";
+import {
+  Button,
+  Card,
+  Carousel,
+  Col,
+  Input,
+  Row,
+  Spin,
+  Typography,
+} from "antd";
 import { ChevronRightIcon, MailIcon } from "lucide-react";
 import ProductDetailPage from "./products/ProductDetailPage";
 import { useState } from "react";
 import { useGetAllCategoriesQuery } from "@/app/services/categories";
+import { Link } from "react-router";
 
 export default function HomePage() {
   // const featuredProducts = products.slice(0, 8);
@@ -25,7 +35,8 @@ export default function HomePage() {
           <div
             style={{
               height: "500px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              background:
+                "url('https://images.unsplash.com/photo-1543964251-44534f821993?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center/cover",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -43,7 +54,7 @@ export default function HomePage() {
                   marginBottom: "20px",
                 }}
               >
-                Summer Sale 2024
+                Winter Sale 2025
               </h1>
               <p
                 style={{
@@ -54,9 +65,11 @@ export default function HomePage() {
               >
                 Up to 50% off on selected items
               </p>
-              <Button type="primary" size="large">
-                Shop Now <ChevronRightIcon />
-              </Button>
+              <Link to={"/categories"}>
+                <Button type="primary" size="large">
+                  Shop Now <ChevronRightIcon />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -93,9 +106,11 @@ export default function HomePage() {
               >
                 Discover the latest trends
               </p>
-              <Button type="primary" size="large">
-                Explore Now <ChevronRightIcon />
-              </Button>
+              <Link to={"/categories"}>
+                <Button type="primary" size="large">
+                  Explore Now <ChevronRightIcon />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -132,9 +147,11 @@ export default function HomePage() {
               >
                 On orders over $50
               </p>
-              <Button type="primary" size="large">
-                Start Shopping <ChevronRightIcon />
-              </Button>
+              <Link to={"/categories"}>
+                <Button type="primary" size="large">
+                  Start Shopping <ChevronRightIcon />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -182,9 +199,11 @@ export default function HomePage() {
                   >
                     {category.name}
                   </h3>
-                  <p style={{ color: "#666", margin: 0 }}>
-                    {category.products_count} products
-                  </p>
+                  <Link to={`/categories/${category.slug}`}>
+                    <Typography.Link style={{ color: "#666", margin: 0 }}>
+                      {category.products_count} products
+                    </Typography.Link>
+                  </Link>
                 </Card>
               </Col>
             ))
